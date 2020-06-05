@@ -30,6 +30,14 @@ class App extends Component {
 		}))
   }
   
+  restartGame = () => {
+	  this.setState({
+		  numQuestions: 0,
+		  numCorrect: 0,
+		  gameOver: false,
+		  gameResult: ''
+	  })
+  }
   render() {
     return (
       <div className="App">
@@ -41,6 +49,7 @@ class App extends Component {
 		    <div>
 			   <h1> You {this.state.win} </h1>
 		       <h2> {this.state.gameResult} </h2>
+			   <button onClick={this.restartGame}>Restart</button>
 			</div>
 		  ) : (
 		    <div className="game">
