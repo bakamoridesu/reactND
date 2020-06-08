@@ -13,6 +13,7 @@
 # misc
 /reactnd-contacts-app/.DS_Store
 /reactnd-contacts-server2/.DS_Store
+/reactnd-contacts-app/.debug.log*
 
 /reactnd-contacts-app/.env.local
 /reactnd-contacts-app/.env.development.local
