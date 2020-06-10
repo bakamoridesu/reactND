@@ -2,17 +2,16 @@
 function createStore(reducer) {
 	
 	let state
+	let listeners = []
 	
 	const getState = () => state
 	
-	const listeners = []
-	
-	const subscribe((listener) => {
+	const subscribe = (listener) => {
 		listeners.push(listener)
 		return () => {
 			listeners.filter((l) => l !== listener)
 		}
-	})
+	}
 	
 	const dispatch = (action) => {
 		state = todos(state, action)
