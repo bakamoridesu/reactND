@@ -14,7 +14,7 @@ function createStore(reducer) {
 	}
 	
 	const dispatch = (action) => {
-		state = todos(state, action)
+		state = reducer(state, action)
 		listeners.forEach((listener) => listener())
 	}
 	return {
@@ -28,14 +28,17 @@ function createStore(reducer) {
 function todos (state=[], action) {
 	switch(action.type){
 		case 'ADD_TODO' :
-			return state.concat([action.code])
+			return state.concat([action.todo])
 		case 'REMOVE_TODO':
-			return state.filter((todo) => (todo.id !== action.todo.id))
+			return state.filter((todo) => (todo.id !== action.id))
 		case 'TOGGLE_TODO':
-			return state.map((todo) => todo.id !== action.todo.id ? todo : 
+			console.log(state);
+			console.log(action);
+			return state.map((todo) => todo.id !== action.id ? todo : 
 				Object.assign({}, todo, {complete: !todo.complete}))
 		default: 
 			return state
+	}
 }
 
 function goals (state=[], action){
@@ -48,3 +51,22 @@ function goals (state=[], action){
 			return state
 	}
 }
+
+function app(state={}, action){
+	return {
+		todos: todos(state.todos, action),
+		goals: goals(state.goals, action),
+	}
+}
+
+const store = createStore(app)
+
+unsubscribe_stateUpdated = store.subscribe(() => {console.log('state updated')})
+
+store.dispatch({type: 'ADD_TODO',
+todo: {
+	id: 0,
+	name: 'Learn Redux',
+	complete: false
+}
+})
