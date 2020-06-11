@@ -72,7 +72,7 @@
 					case ADD_GOAL:
 						return state.concat([action.goal])
 					case REMOVE_GOAL:
-						return state.filter((goal) => goal.id !== action.id)
+						return state.filter((goal) => (goal.id !== action.id))
 					default:
 						return state
 				}
@@ -172,26 +172,37 @@
 			document.getElementById('todoBtn').addEventListener('click', addTodo)
 			document.getElementById('goalBtn').addEventListener('click', addGoal)
 			
-			function toggleTodo(id){
-				console.log(id);
+			function createRemoveBtn (onClick) {
+				const btn = document.createElement('button')
+				btn.innerHTML = 'X'
+				btn.addEventListener('click', onClick);
+				return btn
 			}
 			
 			function addTodoToDOM(todo){
 				const node = document.createElement('li')
 				const text = document.createTextNode(todo.name)
+				const removeBtn = createRemoveBtn(()=>{
+					store.dispatch(removeTodoAction(todo.id))
+				})
 				node.appendChild(text)
+				node.appendChild(removeBtn)
 				node.style.textDecoration = todo.complete ? 'line-through' : 'none'
 				node.addEventListener('click', () => {
 					store.dispatch(toggleTodoAction(todo.id))
 				})
+				
 				document.getElementById('todos').appendChild(node)
 			}
 			
 			function addGoalToDOM(goal){
 				const node = document.createElement('li')
 				const text = document.createTextNode(goal.name)
+				const removeBtn = createRemoveBtn(()=>{
+					store.dispatch(removeGoalAction(goal.id))
+				})
 				node.appendChild(text)
-				
+				node.appendChild(removeBtn)
 				document.getElementById('goals').appendChild(node)
 			}
 		</script>
