@@ -86,34 +86,19 @@
 				}
 			}
 			
-			function checkAndDispatch(store, action) {
+			const checker = (store) => (next) => (action) => {
 				if(action.type === ADD_TODO &&
-				   action.todo.name.toLowerCase().includes('bitcoin'))
+				   action.todo.name.toLowerCase().includes('bitcoin')){
 					  return (alert("Nope. It's a bad idea"))
-					  
+				}
 				if(action.type === ADD_GOAL &&
-				   action.goal.name.toLowerCase().includes('bitcoin'))
+				   action.goal.name.toLowerCase().includes('bitcoin')){
 					  return (alert("Nope. It's a bad idea"))	  
-					  
-				return store.dispatch(action)
+				}	  
+				return next(action)
 			}
-			const store = Redux.createStore(Redux.combineReducers({
-				todos,
-				goals,
-			}))
 
-			unsubscribe_stateUpdated = store.subscribe(() => {
-				const {goals, todos} = store.getState()
-				
-				document.getElementById('todos').innerHTML = ''
-				document.getElementById('goals').innerHTML = ''
-				todos.forEach(addTodoToDOM);
-				goals.forEach(addGoalToDOM);
-			})
 			
-			unsubscribe_updater = store.subscribe(() => {
-				console.log('new state', store.getState())
-			})
 /*
 			store.dispatch({type: ADD_TODO,
 			todo: {
@@ -131,7 +116,7 @@
 				const name = input.value
 				input.value = ''
 				
-				checkAndDispatch(store, addTodoAction({
+				store.dispatch(addTodoAction({
 					name,
 					complete:false,
 					id: generateId()
@@ -143,7 +128,7 @@
 				const name = input.value
 				input.value = ''
 				
-				checkAndDispatch(store, addGoalAction({
+				store.dispatch(addGoalAction({
 					name,
 					id: generateId()
 				}))
@@ -163,13 +148,13 @@
 				const node = document.createElement('li')
 				const text = document.createTextNode(todo.name)
 				const removeBtn = createRemoveBtn(()=>{
-					checkAndDispatch(store, removeTodoAction(todo.id))
+					store.dispatch(removeTodoAction(todo.id))
 				})
 				node.appendChild(text)
 				node.appendChild(removeBtn)
 				node.style.textDecoration = todo.complete ? 'line-through' : 'none'
 				node.addEventListener('click', () => {
-					checkAndDispatch(store, toggleTodoAction(todo.id))
+					store.dispatch(toggleTodoAction(todo.id))
 				})
 				
 				document.getElementById('todos').appendChild(node)
@@ -179,12 +164,31 @@
 				const node = document.createElement('li')
 				const text = document.createTextNode(goal.name)
 				const removeBtn = createRemoveBtn(()=>{
-					checkAndDispatch(store, removeGoalAction(goal.id))
+					store.dispatch(removeGoalAction(goal.id))
 				})
 				node.appendChild(text)
 				node.appendChild(removeBtn)
 				document.getElementById('goals').appendChild(node)
 			}
+			
+			
+			const store = Redux.createStore(Redux.combineReducers({
+				todos,
+				goals,
+			}), Redux.applyMiddleware(checker))
+
+			unsubscribe_stateUpdated = store.subscribe(() => {
+				const {goals, todos} = store.getState()
+				
+				document.getElementById('todos').innerHTML = ''
+				document.getElementById('goals').innerHTML = ''
+				todos.forEach(addTodoToDOM);
+				goals.forEach(addGoalToDOM);
+			})
+			
+			unsubscribe_updater = store.subscribe(() => {
+				console.log('new state', store.getState())
+			})
 		</script>
 	</body>
 </html>
