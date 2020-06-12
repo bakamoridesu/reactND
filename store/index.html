@@ -98,7 +98,14 @@
 				return next(action)
 			}
 
-			
+			const logger = (store) => (next) => (action) => {
+				console.group(action.type)
+					console.log('The action is: ', action)
+					const result = next(action)
+					console.log('The new state is: ', store.getState())
+				console.groupEnd()
+				return result
+			}
 /*
 			store.dispatch({type: ADD_TODO,
 			todo: {
@@ -175,7 +182,7 @@
 			const store = Redux.createStore(Redux.combineReducers({
 				todos,
 				goals,
-			}), Redux.applyMiddleware(checker))
+			}), Redux.applyMiddleware(checker, logger))
 
 			unsubscribe_stateUpdated = store.subscribe(() => {
 				const {goals, todos} = store.getState()
@@ -186,9 +193,6 @@
 				goals.forEach(addGoalToDOM);
 			})
 			
-			unsubscribe_updater = store.subscribe(() => {
-				console.log('new state', store.getState())
-			})
 		</script>
 	</body>
 </html>
