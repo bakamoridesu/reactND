@@ -125,28 +125,6 @@
 			function generateId () {
 				return Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36)
 			}
-			function addTodo() {
-				const input = document.getElementById('todo')
-				const name = input.value
-				input.value = ''
-				
-				store.dispatch(addTodoAction({
-					name,
-					complete:false,
-					id: generateId()
-				}))
-			}
-			
-			function addGoal() {
-				const input = document.getElementById('goal')
-				const name = input.value
-				input.value = ''
-				
-				store.dispatch(addGoalAction({
-					name,
-					id: generateId()
-				}))
-			}
 			
 			// user code
 			const store = Redux.createStore(Redux.combineReducers({
@@ -162,12 +140,14 @@
 			class Todos extends React.Component{
 				addItem = (e) => {
 					e.preventDefault()
-					this.props.store.dispatch(addTodoAction({
-						name: this.input.value,
-						complete:false,
-						id: generateId()
-					}))
-					this.input.value = ''
+					API.saveTodo(this.input.value)
+					.then((todo)=>{
+						this.props.store.dispatch(addTodoAction(todo))
+						this.input.value = ''
+					})
+					.catch(()=>{
+						alert('An error occured. Try again')
+					})
 				}
 				removeItem = (todo) => {
 					this.props.store.dispatch(removeTodoAction(todo.id))
@@ -204,11 +184,12 @@
 			class Goals extends React.Component{
 				addItem = (e) => {
 					e.preventDefault()
-					this.props.store.dispatch(addGoalAction({
-						name: this.input.value,
-						id: generateId()
-					}))
-					this.input.value = ''
+					API.saveGoal(this.input.value)
+					.then((goal)=>{
+						this.props.store.dispatch(addGoalAction(goal))
+						this.input.value = ''
+					})
+					.catch(()=>alert('An error occured. Try again'))
 				}
 				removeItem = (goal) => {
 					this.props.store.dispatch(removeGoalAction(goal.id))
