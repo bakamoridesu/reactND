@@ -52,104 +52,12 @@
 		</script>
 		<script type='text/babel'>
 		// React code
-			class Todos extends React.Component{
-				addItem = (e) => {
-					e.preventDefault()
-					this.props.dispatch(handleAddTodoAction(this.input.value, ()=>{this.input.value = ''}))
-				}
-				removeItem = (todo) => {
-					this.props.dispatch(handleRemoveTodoAction(todo))
-				}
-				toggleItem = (id) => {
-					this.props.dispatch(handleToggleTodoAction(id))
-				}
-				render(){
-					return (
-						<div> 
-							<h1>TODOS</h1>
-							<input 
-								type='text'
-								placeholder='Add todo'
-								ref = {(input) => this.input = input}
-							/>
-							<button onClick={this.addItem}>Add TODO</button>
-							<List items={this.props.todos} remove={this.removeItem} toggle={this.toggleItem}/>
-						</div>
-					)
-				}
-			}
 			
-			const ConnectedTodos = ReactRedux.connect((state)=>({
-				todos: state.todos
-			}))(Todos)
 			
-			class Goals extends React.Component{
-				addItem = (e) => {
-					e.preventDefault()
-					this.props.dispatch(handleAddGoalAction(this.input.value, ()=>{this.input.value = ''}))
-				}
-				
-				removeItem = (goal) => {
-					this.props.dispatch(handleRemoveGoalAction(goal))
-				}
-				
-				render(){
-					return (
-						<div> 
-							<h1>GOALS</h1>
-							<input 
-								type='text'
-								placeholder='Add goal'
-								ref = {(input) => this.input = input}
-							/>
-							<button onClick={this.addItem}>Add GOAL</button>
-							<List items={this.props.goals} remove={this.removeItem}/>
-						</div>
-					)
-				}
-			}
 			
-			const ConnectedGoals = ReactRedux.connect((state)=>({
-				goals: state.goals
-			}))(Goals)
 			
-			function List (props) {
-				return (
-					<ul>
-					{props.items.map((item) => (
-						<li key={item.id}>
-							<span 
-								onClick={() => {props.toggle && props.toggle(item.id)}}
-								style = {{textDecoration: item.complete ? 'line-through' : 'none'}}
-							>{item.name}</span>
-							<button onClick={() => {props.remove(item)}}>X</button>
-						</li>
-					))}
-					</ul>
-				)
-			}
 			
-			class App extends React.Component {
-				componentDidMount(){
-					this.props.dispatch(handleInitialData())
-				}
-				render(){
-				   
-					if(this.props.loading){
-						return <h3>Loading data...</h3>
-					}
-					return (
-						<div>
-							<ConnectedTodos />
-							<ConnectedGoals />
-						</div>
-					)
-				}
-			}
 			
-			const ConnectedApp = ReactRedux.connect((state)=>({
-				loading: state.loading
-			}))(App)
 			
 			ReactDOM.render(
 				<ReactRedux.Provider store={store}>
