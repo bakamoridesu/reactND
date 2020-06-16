@@ -17,7 +17,7 @@ function removeGoal(id) {
   }
 }
 
-export function handleRemoveGoalAction(goal) {
+export function handleRemoveGoal(goal) {
   return (dispatch) => {
     dispatch(removeGoal(goal.id))
 
@@ -28,7 +28,7 @@ export function handleRemoveGoalAction(goal) {
   }
 }
 
-export function handleAddGoalAction(goalName, cb) {
+export function handleAddGoal(goalName, cb) {
   return (dispatch) => {
     API.saveGoal(goalName)
       .then((goal) => {
