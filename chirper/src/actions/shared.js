@@ -3,7 +3,7 @@ import {receiveUsers} from "./users";
 import {receiveTweets} from "./tweets";
 import {setAuthedUser} from "./authedUser";
 
-const AUTHED_USER = 'tylermcginnis'
+const AUTHED_ID = 'tylermcginnis'
 
 export function handleInitialData() {
   return (dispatch) => {
@@ -11,7 +11,7 @@ export function handleInitialData() {
       .then(({users, tweets}) => {
         dispatch(receiveUsers(users))
         dispatch(receiveTweets(tweets))
-        dispatch(setAuthedUser(AUTHED_USER))
+        dispatch(setAuthedUser(AUTHED_ID))
       })
   }
 }
