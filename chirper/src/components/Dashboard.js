@@ -4,7 +4,7 @@ import Tweet from "./Tweet";
 
 class Dashboard extends Component{
   render() {
-    console.log(this.props)
+    console.log('Dashboard renders')
     return(
       <div>
         <h3 className='center'>Your timeline</h3>
