@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {View, Text, TouchableOpacity} from 'react-native'
 import {getMetricMetaInfo} from "../utils/helpers"
 import UdSlider from "./UdSlider";
-import Stepper from "./Stepper";
+import UdStepper from "./UdStepper";
 import DateHeader from "./DateHeader";
 import {timeToString} from "../utils/helpers";
 
@@ -39,7 +39,7 @@ export default class AddEntry extends Component {
 
   decrement = (metric) => {
     this.setState((state) => {
-      const count = state[metric] = getMetricMetaInfo(metric).step
+      const count = state[metric] - getMetricMetaInfo(metric).step
 
       return {
         ...state,
@@ -93,7 +93,7 @@ export default class AddEntry extends Component {
                     value={value}
                     onChange={(value) => this.slide(key, value)}
                     {...rest}/>
-                  : <Stepper
+                  : <UdStepper
                     value={value}
                     onIncrement={() => this.increment(key)}
                     onDecrement={() => this.decrement(key)}
