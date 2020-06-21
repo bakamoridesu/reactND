@@ -5,6 +5,9 @@ import UdSlider from "./UdSlider";
 import UdStepper from "./UdStepper";
 import DateHeader from "./DateHeader";
 import {timeToString} from "../utils/helpers";
+import { Ionicons } from '@expo/vector-icons'
+import TextButton from "./TextButton";
+import { removeEntry, submitEntry } from "../utils/Api";
 
 function SubmitBtn ({ onPress }) {
   return (
@@ -69,13 +72,38 @@ export default class AddEntry extends Component {
     })
     // navigate to home
 
-    // save to 'db'
+    submitEntry({ key, entry })
 
     // clean local notification
   }
 
+  reset = () => {
+    const key = timeToString()
+
+    // update Redux
+
+    // go to home
+
+    removeEntry(key)
+  }
+
   render() {
     const metaInfo = getMetricMetaInfo()
+
+    if(true) {
+      return (
+        <View>
+          <Ionicons
+            name='md-happy'
+            size={100}
+          />
+          <Text>You already logged your information for today</Text>
+          <TextButton onPress={this.reset}>
+            Reset
+          </TextButton>
+        </View>
+      )
+    }
 
     return (
       <View>
