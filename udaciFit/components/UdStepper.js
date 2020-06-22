@@ -5,7 +5,7 @@ import {white, purple, gray, red, blue, pink, orange, lightPurp} from "../utils/
 
 export default function UdStepper({max, unit, step, value, onIncrement, onDecrement}) {
   return (
-    <View style={[styles.row, {justifyContent: 'space-around'}]}>
+    <View style={[styles.row, {justifyContent: 'space-between'}]}>
       {Platform.OS === 'ios'
         ? (
           <View style={{flexDirection: 'row'}}>
