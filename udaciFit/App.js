@@ -78,6 +78,9 @@ export default function App() {
                 headerTintColor: white,
                 headerStyle: {
                   backgroundColor: purple,
+                },
+                headerTitleStyle:{
+                  alignSelf: 'baseline',
                 }
               }}/>
           </MainNavigator.Navigator>
